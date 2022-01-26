@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &627637620
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 627637621}
+  m_Layer: 0
+  m_Name: CameraFollowTarget
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &627637621
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 627637620}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.17, y: 1.547, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7263234262475208452}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &24711230596224091
 GameObject:
   m_ObjectHideFlags: 0
@@ -1095,6 +1125,36 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.020754155, y: 0.28914946, z: 0.16337356}
     m_Extent: {x: 0.053206723, y: 0.021549523, z: 0.011978403}
   m_DirtyAABB: 0
+--- !u!1 &3804795204007326743
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2738199267088695128}
+  m_Layer: 0
+  m_Name: WeaponSocket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2738199267088695128
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3804795204007326743}
+  m_LocalRotation: {x: -0.5016961, y: 0.5161097, z: 0.5033237, w: 0.47811836}
+  m_LocalPosition: {x: -0.0209, y: 0.0861, z: 0.031}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8859465176086310695}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: -87.827, y: -162.335, z: 254.606}
 --- !u!1 &3881260329708876478
 GameObject:
   m_ObjectHideFlags: 0
@@ -1374,6 +1434,7 @@ Transform:
   - {fileID: 8341941326919506055}
   - {fileID: 2146808359696054243}
   - {fileID: 1620338590949344273}
+  - {fileID: 2738199267088695128}
   m_Father: {fileID: 4671876035201656135}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2439,6 +2500,7 @@ GameObject:
   - component: {fileID: 7153555043853500994}
   - component: {fileID: 7153555043853500995}
   - component: {fileID: 7153555043853500996}
+  - component: {fileID: 1767024992}
   m_Layer: 0
   m_Name: Sophie
   m_TagString: Untagged
@@ -2464,6 +2526,7 @@ Transform:
   - {fileID: 8998642695742424334}
   - {fileID: 3271790408372575410}
   - {fileID: 2926323641216505744}
+  - {fileID: 627637621}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2561,6 +2624,10 @@ MonoBehaviour:
   walkSpeed: 5
   runSpeed: 10
   jumpForce: 5
+  aimSensitivity: 0.25
+  followTarget: {fileID: 627637620}
+  cameraMin: -70
+  cameraMax: 70
 --- !u!114 &7153555043853500996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2577,6 +2644,22 @@ MonoBehaviour:
   isReloading: 0
   isJumping: 0
   isRunning: 0
+  isAiming: 0
+--- !u!114 &1767024992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8036640243911732670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99ddbd47a8de6a9449e1cff6473b5322, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponToSpawn: {fileID: 1322254092898351462, guid: a0ef9706d3924ca4881731c3ab939dc9, type: 3}
+  crossHairImage: {fileID: 21300000, guid: 118c6fa7367591245bc1adaef170cdeb, type: 3}
+  weaponSocketLocation: {fileID: 3804795204007326743}
 --- !u!1 &8202173325922395906
 GameObject:
   m_ObjectHideFlags: 0
