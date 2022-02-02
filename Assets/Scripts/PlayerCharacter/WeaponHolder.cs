@@ -19,8 +19,11 @@ public class WeaponHolder : MonoBehaviour
 
     #region Component Reference Variables
     private PlayerController playerController;
+    public PlayerController controller => playerController;
     private Animator animator;
     #endregion
+
+    private bool firingPressed = false;
 
     public readonly int isFiringHash = Animator.StringToHash("isFiring");
     public readonly int isReloadingHash = Animator.StringToHash("isReloading");
@@ -32,14 +35,15 @@ public class WeaponHolder : MonoBehaviour
         animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
         equippedWeapon = spawnedWeapon;
+        equippedWeapon.weaponHolder = this;
         gripIKSocket = equippedWeapon.gripLocation;
     }
 
     private void OnAnimatorIK(int layerIndex)
     {
-        if (equippedWeapon && equippedWeapon.gripLocation)
+        if (!playerController.isReloading && equippedWeapon && equippedWeapon.gripLocation)
         {
-            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, playerController.isReloading ? 0.0f : 1.0f);
+            animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1.0f);
             animator.SetIKPosition(AvatarIKGoal.LeftHand, gripIKSocket.transform.position);
         }
     }
@@ -48,11 +52,45 @@ public class WeaponHolder : MonoBehaviour
     {
         playerController.isReloading = value.isPressed;
         animator.SetBool(isReloadingHash, playerController.isReloading);
+        animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0);
+    }
+
+    private void StartReloading()
+    {
+
+    }
+
+    private void StopReloading()
+    {
+
     }
 
     public void OnFire(InputValue value)
     {
-        playerController.isFiring = value.isPressed;
+        firingPressed = value.isPressed;
+        if (firingPressed)
+        {
+            StartFiring();
+        }
+        else
+        {
+            StopFiring();
+        }
+    }
+
+    private void StartFiring()
+    {
+        if (equippedWeapon.stats.bulletsInClip <= 0) return;
+
+        playerController.isFiring = true;
         animator.SetBool(isFiringHash, playerController.isFiring);
+        equippedWeapon.StartFiring();
+    }
+
+    private void StopFiring()
+    {
+        playerController.isFiring = false;
+        animator.SetBool(isFiringHash, playerController.isFiring);
+        equippedWeapon.StopFiring();
     }
 }
