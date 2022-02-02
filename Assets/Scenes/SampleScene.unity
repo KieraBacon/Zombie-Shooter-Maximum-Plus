@@ -14062,6 +14062,11 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!1 &1934794293 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3804795204007326743, guid: 2b72fefe46ca71246bbd7aa58d9876c2, type: 3}
+  m_PrefabInstance: {fileID: 3504528721828842116}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1946210045
 GameObject:
   m_ObjectHideFlags: 0
@@ -14365,6 +14370,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1767024992, guid: 2b72fefe46ca71246bbd7aa58d9876c2, type: 3}
+      propertyPath: weaponSocket
+      value: 
+      objectReference: {fileID: 1934794293}
     - target: {fileID: 7153555043853500995, guid: 2b72fefe46ca71246bbd7aa58d9876c2, type: 3}
       propertyPath: clampb
       value: 300

@@ -24,8 +24,8 @@ public class MovementComponent : MonoBehaviour
 
     #region Component Reference Variables
     private PlayerController playerController;
-    private Rigidbody rigidbody;
     private Animator animator;
+    private Rigidbody rigidbody;
     public GameObject followTarget;
     #endregion
 
@@ -33,8 +33,7 @@ public class MovementComponent : MonoBehaviour
     public readonly int movementYHash = Animator.StringToHash("MovementY");
     public readonly int isRunningHash = Animator.StringToHash("isRunning");
     public readonly int isJumpingHash = Animator.StringToHash("isJumping");
-    public readonly int isFiringHash = Animator.StringToHash("isFiring");
-    public readonly int isReloadingHash = Animator.StringToHash("isReloading");
+
 
     private void Awake()
     {
@@ -107,18 +106,6 @@ public class MovementComponent : MonoBehaviour
     {
         lookInput = value.Get<Vector2>();
         // If we aim up, down, adjust animations to have a mask that will let us properly animate aim.
-    }
-
-    public void OnReload(InputValue value)
-    {
-        playerController.isReloading = value.isPressed;
-        animator.SetBool(isReloadingHash, playerController.isReloading);
-    }
-
-    public void OnFire(InputValue value)
-    {
-        playerController.isFiring = value.isPressed;
-        animator.SetBool(isFiringHash, playerController.isFiring);
     }
 
     private void OnCollisionEnter(Collision collision)
