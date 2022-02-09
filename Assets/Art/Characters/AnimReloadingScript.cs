@@ -5,7 +5,7 @@ using UnityEngine;
 public class AnimReloadingScript : StateMachineBehaviour
 {
     int isReloadingHash = Animator.StringToHash("isReloading");
-    private PlayerController playerController;
+    //private PlayerController playerController;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -22,11 +22,11 @@ public class AnimReloadingScript : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (!playerController)
-            playerController = animator.gameObject.GetComponent<PlayerController>();
-        Debug.Log("playerController.isReloading" + playerController.isReloading);
+        //if (!playerController)
+        //    playerController = animator.gameObject.GetComponent<PlayerController>();
+        //Debug.Log("playerController.isReloading" + playerController.isReloading);
         animator.SetBool(isReloadingHash, false);
-        playerController.isReloading = false;
+        //playerController.isReloading = false;
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
