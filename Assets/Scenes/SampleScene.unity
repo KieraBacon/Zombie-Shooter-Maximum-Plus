@@ -6447,7 +6447,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh18074
+  m_Name: pb_Mesh18106
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -7959,7 +7959,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh18134
+  m_Name: pb_Mesh18222
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -18539,6 +18539,10 @@ PrefabInstance:
       propertyPath: weaponSocket
       value: 
       objectReference: {fileID: 1934794293}
+    - target: {fileID: 6780925978541739222, guid: 2b72fefe46ca71246bbd7aa58d9876c2, type: 3}
+      propertyPath: m_Constraints
+      value: 112
+      objectReference: {fileID: 0}
     - target: {fileID: 7153555043853500995, guid: 2b72fefe46ca71246bbd7aa58d9876c2, type: 3}
       propertyPath: clampb
       value: 300
@@ -18546,6 +18550,10 @@ PrefabInstance:
     - target: {fileID: 7153555043853500995, guid: 2b72fefe46ca71246bbd7aa58d9876c2, type: 3}
       propertyPath: clampd
       value: 300
+      objectReference: {fileID: 0}
+    - target: {fileID: 7153555043853500995, guid: 2b72fefe46ca71246bbd7aa58d9876c2, type: 3}
+      propertyPath: layerMask.m_Bits
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7263234262475208452, guid: 2b72fefe46ca71246bbd7aa58d9876c2, type: 3}
       propertyPath: m_RootOrder

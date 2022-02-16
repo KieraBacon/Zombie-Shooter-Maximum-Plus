@@ -14,6 +14,10 @@ public class MovementComponent : MonoBehaviour
     private float jumpForce = 5;
     [SerializeField]
     private float aimSensitivity = 5;
+    [SerializeField]
+    private int maxJumps = 1;
+    private int jumpCount;
+    private bool isGrounded;
     #endregion
 
     #region Movement Variables
@@ -26,6 +30,7 @@ public class MovementComponent : MonoBehaviour
     private PlayerController playerController;
     private Animator animator;
     private Rigidbody rigidbody;
+    private Collider collider;
     public GameObject followTarget;
     #endregion
 
@@ -40,12 +45,61 @@ public class MovementComponent : MonoBehaviour
         animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
         rigidbody = GetComponent<Rigidbody>();
+        collider = GetComponent<Collider>();
     }
 
 
+    [SerializeField]
+    LayerMask layerMask;
+    [SerializeField]
+    float groundedAngle = 45;
+    [SerializeField]
+    float raycastDist = 0.1f;
+    [SerializeField]
+    float coyoteTime = 0.1f;
+    float coyoteTimer = 0;
+    [SerializeField]
+    float jumpTime = 0.1f;
+    float jumpTimer = 0;
     private void FixedUpdate()
     {
-        //Physics.Raycast()
+        if (jumpTimer < jumpTime)
+            jumpTimer += Time.fixedDeltaTime;
+
+        isGrounded = false;
+
+        RaycastHit[] hitInfo = Physics.SphereCastAll(new Ray(collider.bounds.center + Vector3.down * collider.bounds.extents.y, Vector3.down), collider.bounds.extents.x * 0.5f, raycastDist, layerMask);
+        foreach (RaycastHit hit in hitInfo)
+        {
+            if (!hit.transform || hit.transform.gameObject == gameObject) continue;
+
+            if (Vector3.Angle(hit.normal, Vector3.up) < groundedAngle)
+            {
+                isGrounded = true;
+                break;
+            }
+            else
+            {
+                continue;
+            }
+        }
+        if (!isGrounded)
+        {
+            coyoteTimer += Time.fixedDeltaTime;
+            if (coyoteTimer < coyoteTime)
+                isGrounded = true;
+        }
+        else if (jumpTimer > jumpTime)
+        {
+            coyoteTimer = 0;
+            jumpCount = 0;
+            if (playerController.isInAir)
+            {
+                animator.SetBool(isJumpingHash, false);
+            }
+        }
+        
+        playerController.isInAir = !isGrounded;
     }
 
 
@@ -67,7 +121,7 @@ public class MovementComponent : MonoBehaviour
         #endregion
 
 
-        if (playerController.isJumping) return;
+        if (playerController.isInAir) return;
         if (!(inputVector.magnitude > 0)) moveDirection = Vector3.zero;
         
         moveDirection = transform.forward * inputVector.y + transform.right * inputVector.x;
@@ -75,6 +129,9 @@ public class MovementComponent : MonoBehaviour
         
         Vector3 movementDirection = moveDirection * currentSpeed * Time.deltaTime;
         transform.position += movementDirection;
+
+        // Firing angles
+
     }
 
     public void OnMovement(InputValue value)
@@ -92,9 +149,16 @@ public class MovementComponent : MonoBehaviour
 
     public void OnJump(InputValue value)
     {
-        playerController.isJumping = true;
-        animator.SetBool(isJumpingHash, playerController.isJumping);
-        rigidbody.AddForce((transform.up + moveDirection) * jumpForce, ForceMode.Impulse);
+        if (!isGrounded) return;
+        if (playerController.isInAir) return;
+
+        if (jumpCount < maxJumps && jumpTimer >= jumpTime)
+        {
+            ++jumpCount;
+            jumpTimer = 0;
+            animator.SetBool(isJumpingHash, true);
+            rigidbody.AddForce((transform.up + moveDirection) * jumpForce, ForceMode.Impulse);
+        }
     }
 
     public void OnAim(InputValue value)
@@ -106,13 +170,5 @@ public class MovementComponent : MonoBehaviour
     {
         lookInput = value.Get<Vector2>();
         // If we aim up, down, adjust animations to have a mask that will let us properly animate aim.
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (!collision.gameObject.CompareTag("Ground") && !playerController.isJumping) return;
-
-        playerController.isJumping = false;
-        animator.SetBool(isJumpingHash, playerController.isJumping);
     }
 }
