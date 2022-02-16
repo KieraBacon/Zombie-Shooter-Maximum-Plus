@@ -19,7 +19,7 @@
                     "id": "7d031ef5-72e5-48f5-bda3-024255cb8ec8",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press"
+                    "interactions": "Press(behavior=2)"
                 },
                 {
                     "name": "Run",
