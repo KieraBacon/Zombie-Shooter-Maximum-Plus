@@ -9,4 +9,7 @@ public class PlayerController : MonoBehaviour
     public bool isInAir;
     public bool isRunning;
     public bool isAiming;
+
+    [Header("Inventory")]
+    public InventoryComponent inventory;
 }

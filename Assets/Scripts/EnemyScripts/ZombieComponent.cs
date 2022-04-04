@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class ZombieComponent : MonoBehaviour
 {
-    public int attackDamage = 5;
+    public int damage = 5;
     private NavMeshAgent _navMeshAgent;
     public NavMeshAgent navMeshAgent => _navMeshAgent;
     private Animator _animator;
@@ -19,23 +19,27 @@ public class ZombieComponent : MonoBehaviour
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
         _stateMachine = GetComponent<ZombieStateMachine>();
-
-        Initialize(followTarget);
     }
 
-    public void Initialize(GameObject followTarget)
+    private void Start()
     {
-        this.followTarget = followTarget;
+        if (!followTarget)
+            followTarget = GameObject.FindGameObjectWithTag("Player");
+        Initialize();
+    }
+
+    private void Initialize()
+    {
         ZombieState_Idle idleState = new ZombieState_Idle(this, stateMachine);
         stateMachine.AddState(ZombieState.Type.Idle, idleState);
 
         ZombieState_Dead deadState = new ZombieState_Dead(this, stateMachine);
         stateMachine.AddState(ZombieState.Type.Dead, deadState);
         
-        ZombieState_Following followState = new ZombieState_Following(followTarget, this, stateMachine);
+        ZombieState_Following followState = new ZombieState_Following(this, stateMachine);
         stateMachine.AddState(ZombieState.Type.Following, followState);
      
-        ZombieState_Attacking attackState = new ZombieState_Attacking(followTarget, this, stateMachine);
+        ZombieState_Attacking attackState = new ZombieState_Attacking(this, stateMachine);
         stateMachine.AddState(ZombieState.Type.Attacking, attackState);
 
         stateMachine.Initialize(ZombieState.Type.Following);

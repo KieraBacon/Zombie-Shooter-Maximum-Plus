@@ -2503,7 +2503,7 @@ GameObject:
   - component: {fileID: 1767024992}
   m_Layer: 0
   m_Name: Sophie
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2625,6 +2625,14 @@ MonoBehaviour:
   runSpeed: 10
   jumpForce: 5
   aimSensitivity: 0.25
+  maxJumps: 1
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  groundedAngle: 45
+  raycastDist: 0.1
+  coyoteTime: 0.1
+  jumpTime: 0.1
   followTarget: {fileID: 627637620}
   cameraMin: -70
   cameraMax: 70
@@ -2642,7 +2650,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFiring: 0
   isReloading: 0
-  isJumping: 0
+  isInAir: 0
   isRunning: 0
   isAiming: 0
 --- !u!114 &1767024992
@@ -2659,7 +2667,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponToSpawn: {fileID: 1322254092898351462, guid: a0ef9706d3924ca4881731c3ab939dc9, type: 3}
   crossHairImage: {fileID: 21300000, guid: 118c6fa7367591245bc1adaef170cdeb, type: 3}
-  weaponSocketLocation: {fileID: 3804795204007326743}
+  weaponSocket: {fileID: 0}
+  gripIKSocket: {fileID: 0}
+  equippedWeapon: {fileID: 0}
 --- !u!1 &8202173325922395906
 GameObject:
   m_ObjectHideFlags: 0

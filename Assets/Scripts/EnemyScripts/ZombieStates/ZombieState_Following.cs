@@ -4,19 +4,17 @@ using UnityEngine;
 
 public class ZombieState_Following : ZombieState
 {
-    private GameObject followTarget;
     float stoppingDistance = 2;
 
-    public ZombieState_Following(GameObject followTarget, ZombieComponent owningZombie, ZombieStateMachine stateMachine) : base(owningZombie, stateMachine)
+    public ZombieState_Following(ZombieComponent owningZombie, ZombieStateMachine stateMachine) : base(owningZombie, stateMachine)
     {
-        this.followTarget = followTarget;
         updateInterval = 2;
     }
 
     public override void Enter()
     {
         base.Enter();
-        owningZombie.navMeshAgent.SetDestination(followTarget.transform.position);
+        owningZombie.navMeshAgent.SetDestination(owningZombie.followTarget.transform.position);
         owningZombie.navMeshAgent.isStopped = false;
         owningZombie.animator.SetFloat(movementZHash, 0);
     }
@@ -24,16 +22,28 @@ public class ZombieState_Following : ZombieState
     public override void IntervalUpdate()
     {
         base.IntervalUpdate();
-        owningZombie.navMeshAgent.SetDestination(followTarget.transform.position);
+        if (!owningZombie.followTarget)
+        {
+            stateMachine.ChangeState(ZombieState.Type.Idle);
+            return;
+        }
+
+        owningZombie.navMeshAgent.SetDestination(owningZombie.followTarget.transform.position);
     }
 
     public override void Update()
     {
         base.Update();
+        if (!owningZombie.followTarget)
+        {
+            stateMachine.ChangeState(ZombieState.Type.Idle);
+            return;
+        }
+
         float moveZ = owningZombie.navMeshAgent.velocity.normalized.z != 0 ? 1 :0;
         owningZombie.animator.SetFloat(movementZHash, moveZ);
 
-        float distance = Vector3.Distance(owningZombie.transform.position, followTarget.transform.position);
+        float distance = Vector3.Distance(owningZombie.transform.position, owningZombie.followTarget.transform.position);
         if (distance < stoppingDistance)
         {
             stateMachine.ChangeState(ZombieState.Type.Attacking);

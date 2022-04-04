@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class ZombieState_Attacking : ZombieState
 {
-    GameObject followTarget;
     float attackRange = 2;
+    private IDamageable damageableTarget;
 
-    public ZombieState_Attacking(GameObject followTarget, ZombieComponent zombie, ZombieStateMachine stateMachine) : base(zombie, stateMachine)
+    public ZombieState_Attacking(ZombieComponent zombie, ZombieStateMachine stateMachine) : base(zombie, stateMachine)
     {
-        this.followTarget = followTarget;
         updateInterval = 2;
+        damageableTarget = zombie.followTarget.GetComponent<IDamageable>();
     }
 
     public override void Enter()
@@ -25,14 +25,27 @@ public class ZombieState_Attacking : ZombieState
     public override void IntervalUpdate()
     {
         base.IntervalUpdate();
+        if (!owningZombie.followTarget)
+        {
+            stateMachine.ChangeState(ZombieState.Type.Idle);
+            return;
+        }
+
+        damageableTarget?.TakeDamage(owningZombie.damage);
     }
 
     public override void Update()
     {
         base.Update();
-        owningZombie.transform.LookAt(new Vector3(followTarget.transform.position.x, owningZombie.transform.position.y, followTarget.transform.position.z), Vector3.up);
+        if (!owningZombie.followTarget)
+        {
+            stateMachine.ChangeState(ZombieState.Type.Idle);
+            return;
+        }
+
+        owningZombie.transform.LookAt(new Vector3(owningZombie.followTarget.transform.position.x, owningZombie.transform.position.y, owningZombie.followTarget.transform.position.z), Vector3.up);
         
-        float distance = Vector3.Distance(owningZombie.transform.position, followTarget.transform.position);
+        float distance = Vector3.Distance(owningZombie.transform.position, owningZombie.followTarget.transform.position);
         if (distance > attackRange)
         {
             stateMachine.ChangeState(ZombieState.Type.Following);
