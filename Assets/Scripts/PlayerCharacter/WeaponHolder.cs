@@ -15,7 +15,7 @@ public class WeaponHolder : MonoBehaviour
     [SerializeField]
     private Transform gripIKSocket;
     [SerializeField]
-    private WeaponComponent equippedWeapon;
+    public WeaponComponent equippedWeapon;
 
     #region Component Reference Variables
     private PlayerController playerController;
@@ -30,11 +30,10 @@ public class WeaponHolder : MonoBehaviour
 
     void Start()
     {
-        GameObject spawnedWeaponGO = Instantiate(weaponToSpawn, weaponSocket.transform.position, weaponSocket.transform.rotation, weaponSocket.transform);
-        WeaponComponent spawnedWeapon = spawnedWeaponGO.GetComponent<WeaponComponent>();
+        //spawnedWeapon = Instantiate(weaponToSpawn, weaponSocket.transform.position, weaponSocket.transform.rotation, weaponSocket.transform).GetComponent<WeaponComponent>();
         animator = GetComponent<Animator>();
         playerController = GetComponent<PlayerController>();
-        EquipWeapon(spawnedWeapon);
+        //EquipWeapon(spawnedWeapon);
     }
 
     private void OnAnimatorIK(int layerIndex)
@@ -58,6 +57,8 @@ public class WeaponHolder : MonoBehaviour
 
     public void StartReloading()
     {
+        if (!equippedWeapon) return;
+
         if (playerController.isFiring)
         {
             StopFiring();
@@ -105,6 +106,8 @@ public class WeaponHolder : MonoBehaviour
 
     private void StartFiring()
     {
+        if (!equippedWeapon) return;
+
         if (equippedWeapon.stats.bulletsInClip <= 0)
         {
             StartReloading();
@@ -120,14 +123,36 @@ public class WeaponHolder : MonoBehaviour
     {
         playerController.isFiring = false;
         animator.SetBool(isFiringHash, playerController.isFiring);
+
+        if (!equippedWeapon) return;
         equippedWeapon.StopFiring();
     }
 
     public void EquipWeapon(WeaponComponent weaponComponent)
     {
+        if (!weaponComponent) return;
+
         equippedWeapon = weaponComponent;
         equippedWeapon.weaponHolder = this;
         gripIKSocket = equippedWeapon.gripLocation;
         PlayerEvents.InvokeOnWeaponEquipped(weaponComponent);
+    }
+
+    public void EquipWeapon(WeaponScriptable weaponScriptable)
+    {
+        if (!weaponScriptable) return;
+
+        WeaponComponent spawnedWeapon = Instantiate(weaponScriptable.itemPrefab, weaponSocket.transform.position, weaponSocket.transform.rotation, weaponSocket.transform).GetComponent<WeaponComponent>();
+        if (!spawnedWeapon) return;
+
+        EquipWeapon(spawnedWeapon);
+    }
+
+    public void UnequipWeapon()
+    {
+        if (equippedWeapon) return;
+
+        Destroy(equippedWeapon.gameObject);
+        equippedWeapon = null;
     }
 }

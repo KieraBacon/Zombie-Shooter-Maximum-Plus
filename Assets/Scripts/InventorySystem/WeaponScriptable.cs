@@ -11,6 +11,7 @@ public class WeaponScriptable : EquippableScriptable
     {
         if (Equipped)
         {
+            playerController.weaponHolder.UnequipWeapon();
             // Unequip from inventory here
             // Remove from controller here
         }
@@ -18,6 +19,8 @@ public class WeaponScriptable : EquippableScriptable
         {
             // Invote OnWeaponEquipped from player here for inventory
             // Equip weapon from weapon holder on payerController
+
+            playerController.weaponHolder.EquipWeapon(this);
         }
 
         base.UseItem(playerController);

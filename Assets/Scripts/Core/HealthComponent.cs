@@ -16,12 +16,20 @@ public class HealthComponent : MonoBehaviour, IDamageable
         currentHealth = maxHealth;
     }
 
-    public virtual void TakeDamage(float damage)
+    public virtual void TakeDamage(float value)
     {
-        currentHealth -= damage;
+        currentHealth -= value;
         if (currentHealth <= 0)
         {
             Destroy();
+        }
+    }
+
+    public void RestoreHealth(float value)
+    {
+        if (currentHealth < maxHealth)
+        {
+            currentHealth = Mathf.Clamp(currentHealth + value, 0, maxHealth);
         }
     }
 

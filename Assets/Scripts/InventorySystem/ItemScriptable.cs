@@ -58,6 +58,4 @@ public abstract class ItemScriptable : ScriptableObject
         this.amount = amount;
         onAmountChanged?.Invoke();
     }
-
-
 }

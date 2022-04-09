@@ -31,6 +31,9 @@ public class GameUIController : MonoBehaviour
 
         ActiveWidget = GameCanvas;
         ActiveWidget.EnableWidget();
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void EnableInventoryMenu()
@@ -39,6 +42,9 @@ public class GameUIController : MonoBehaviour
 
         ActiveWidget = InventoryCanvas;
         ActiveWidget.EnableWidget();
+
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void DisableAllMenus()

@@ -13,12 +13,12 @@ public class AmmoPanel : MonoBehaviour
     private TextMeshProUGUI totalAmmoText;
     private WeaponComponent weaponComponent;
 
-    private void OnEnable()
+    private void Start()
     {
         PlayerEvents.OnWeaponEquipped += OnWeaponEquipped;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         PlayerEvents.OnWeaponEquipped -= OnWeaponEquipped;
     }
@@ -30,11 +30,17 @@ public class AmmoPanel : MonoBehaviour
 
     private void Update()
     {
-        if (!weaponComponent)
-            return;
-
-        weaponNameText.text = weaponComponent.stats.weaponName;
-        currentAmmoText.text = weaponComponent.stats.bulletsInClip.ToString();
-        totalAmmoText.text = weaponComponent.stats.totalBullets.ToString();
+        if (weaponComponent)
+        {
+            weaponNameText.text = weaponComponent.stats.weaponName;
+            currentAmmoText.text = weaponComponent.stats.bulletsInClip.ToString();
+            totalAmmoText.text = weaponComponent.stats.totalBullets.ToString();
+        }
+        else
+        {
+            weaponNameText.text = "";
+            currentAmmoText.text = "";
+            totalAmmoText.text = "";
+        }
     }
 }
