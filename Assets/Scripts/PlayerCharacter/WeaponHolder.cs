@@ -19,6 +19,7 @@ public class WeaponHolder : MonoBehaviour
 
     #region Component Reference Variables
     private PlayerController playerController;
+    public PlayerController player => playerController;
     public PlayerController controller => playerController;
     private Animator animator;
     #endregion
@@ -63,7 +64,7 @@ public class WeaponHolder : MonoBehaviour
         {
             StopFiring();
         }
-        if (equippedWeapon.stats.totalBullets <= 0)
+        if (equippedWeapon.weaponHolder.player.inventory.FindItem(equippedWeapon.stats.weaponName).amount <= 0)
         {
             return;
         }

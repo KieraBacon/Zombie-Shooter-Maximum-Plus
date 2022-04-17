@@ -21,7 +21,6 @@ public struct WeaponStats
     public float damage;
     public int bulletsInClip;
     public int clipSize;
-    public int totalBullets;
     public float fireStartDelay;
     public float refireRate;
     public float range;
@@ -81,12 +80,12 @@ public class WeaponComponent : MonoBehaviour
 
     public virtual bool ShouldReload()
     {
-        return stats.totalBullets > 0 && (stats.dumpAmmoOnReload || stats.bulletsInClip < stats.clipSize);
+        return weaponHolder.player.inventory.FindItem(stats.weaponName).amount > 0 && (stats.dumpAmmoOnReload || stats.bulletsInClip < stats.clipSize);
     }
 
     public virtual void StartReloading()
     {
-        if (stats.totalBullets > 0)
+        if (weaponHolder.player.inventory.FindItem(stats.weaponName).amount > 0)
         {
             isReloading = true;
             ReloadWeapon();
@@ -106,17 +105,17 @@ public class WeaponComponent : MonoBehaviour
             firingEffect.Stop();
 
         int bulletsToFillClip = stats.dumpAmmoOnReload ? stats.clipSize : stats.clipSize - stats.bulletsInClip;
-        int bulletsLeftAfter = stats.totalBullets - bulletsToFillClip;
+        int bulletsLeftAfter = weaponHolder.player.inventory.FindItem(stats.weaponName).amount - bulletsToFillClip;
 
         if (bulletsLeftAfter >= 0)
         {
-            stats.totalBullets -= bulletsToFillClip;
+            weaponHolder.player.inventory.FindItem(stats.weaponName).amount -= bulletsToFillClip;
             stats.bulletsInClip = stats.clipSize;
         }
         else
         {
-            stats.bulletsInClip += stats.totalBullets;
-            stats.totalBullets = 0;
+            stats.bulletsInClip += weaponHolder.player.inventory.FindItem(stats.weaponName).amount;
+            weaponHolder.player.inventory.FindItem(stats.weaponName).amount = 0;
         }
     }
 }

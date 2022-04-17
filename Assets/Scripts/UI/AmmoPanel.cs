@@ -34,7 +34,7 @@ public class AmmoPanel : MonoBehaviour
         {
             weaponNameText.text = weaponComponent.stats.weaponName;
             currentAmmoText.text = weaponComponent.stats.bulletsInClip.ToString();
-            totalAmmoText.text = weaponComponent.stats.totalBullets.ToString();
+            totalAmmoText.text = weaponComponent.weaponHolder.player.inventory.FindItem(weaponComponent.stats.weaponName).amount.ToString();
         }
         else
         {
